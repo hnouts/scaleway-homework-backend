@@ -1,0 +1,33 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: your_email@example.com
+      PGADMIN_DEFAULT_PASSWORD: your_password
+    ports:
+      - 8080:80
+
+  app:
+    build: .
+    volumes:
+      - .:/go/src/github.com/hnouts/scaleway-homework-backend
+    working_dir: /go/src/github.com/hnouts/scaleway-homework-backend
+    environment:
+      - "DB_HOST=db"
+    depends_on:
+      - db
+    command: make run

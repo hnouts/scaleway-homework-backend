@@ -25,9 +25,11 @@ services:
     build: .
     volumes:
       - .:/go/src/github.com/hnouts/scaleway-homework-backend
-    working_dir: /go/src/github.com/hnouts/scaleway-homework-backend
+    working_dir: /root
     environment:
       - "DB_HOST=db"
     depends_on:
       - db
-    command: make run
+    ports:
+      - 8000:8000
+    command: ./myapp

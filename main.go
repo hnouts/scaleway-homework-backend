@@ -33,7 +33,7 @@ func main() {
 	r.HandleFunc("/servers", GetServersHandler(db)).Methods("GET")
 	r.HandleFunc("/servers/{id}", GetServerHandler(db)).Methods("GET")
 
-	http.ListenAndServe(":8000", r)
 	log.Println("Starting server on port 8000")
+	http.ListenAndServe(":8000", r)
     log.Fatal(http.ListenAndServe(":8000", r))
 }

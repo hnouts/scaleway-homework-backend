@@ -11,15 +11,20 @@ services:
       - 5432:5432
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: your_email@example.com
-      PGADMIN_DEFAULT_PASSWORD: your_password
-    ports:
-      - 8080:80
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: your_email@example.com
+  #     PGADMIN_DEFAULT_PASSWORD: your_password
+  #   ports:
+  #     - 8080:80
 
   app:
     build: .
@@ -29,7 +34,8 @@ services:
     environment:
       - "DB_HOST=db"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - 8000:8000
     command: ./myapp

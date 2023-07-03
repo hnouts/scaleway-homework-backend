@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"encoding/json"
 	"net/http"
 
@@ -12,6 +13,7 @@ func CreateServerHandler(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var server Server
 		if err := json.NewDecoder(r.Body).Decode(&server); err != nil {
+			log.Println(&server)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}

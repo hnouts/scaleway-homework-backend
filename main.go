@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
+	"fmt"
+	"os"
 	"net/http"
-
+	"github.com/rs/cors"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" // blank import
@@ -14,7 +16,13 @@ var db *gorm.DB
 func main() {
 	// Open the database
 	var err error
-	db, err = gorm.Open("postgres", "host=db user=myuser dbname=mydatabase password=example sslmode=disable")
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbName := os.Getenv("DB_NAME")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	connectionString := fmt.Sprintf("host=%s user=%s dbname=%s password=%s sslmode=disable", dbHost, dbUser, dbName, dbPassword)
+
+	db, err = gorm.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,7 +41,8 @@ func main() {
 	r.HandleFunc("/servers", GetServersHandler(db)).Methods("GET")
 	r.HandleFunc("/servers/{id}", GetServerHandler(db)).Methods("GET")
 
+	handler := cors.Default().Handler(r)
+
 	log.Println("Starting server on port 8000")
-	http.ListenAndServe(":8000", r)
-    log.Fatal(http.ListenAndServe(":8000", r))
+    log.Fatal(http.ListenAndServe(":8000", handler))
 }

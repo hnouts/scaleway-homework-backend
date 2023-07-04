@@ -1,5 +1,5 @@
 # build stage
-FROM golang:1.17-bullseye AS builder
+FROM golang:1.20-bullseye AS builder
 
 WORKDIR /go/src/github.com/hnouts/scaleway-homework-backend
 

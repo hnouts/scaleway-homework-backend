@@ -1,7 +1,4 @@
--- CREATE USER myuser WITH PASSWORD 'example';
--- GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;
-
--- Create the "servers" table
+-- Create the "servers" table then insert some data
 CREATE TABLE IF NOT EXISTS servers (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,

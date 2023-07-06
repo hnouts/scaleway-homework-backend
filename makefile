@@ -1,7 +1,7 @@
 .PHONY: build run clean all
 
 build:
-	go build -o myapp
+	CGO_ENABLED=0 GOOS=linux go build -a -o myapp .
 
 run:
 	./myapp

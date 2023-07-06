@@ -7,9 +7,9 @@ COPY . .
 
 RUN go mod download
 RUN make clean
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o myapp .
+RUN make build
 
-# final stage
+# final image
 FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates

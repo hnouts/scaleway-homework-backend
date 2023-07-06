@@ -37,7 +37,7 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/servers", CreateServerHandler(db)).Methods("POST")
+	r.HandleFunc("/server", CreateServerHandler(db)).Methods("POST")
 	r.HandleFunc("/servers", GetServersHandler(db)).Methods("GET")
 	r.HandleFunc("/servers/{id}", GetServerHandler(db)).Methods("GET")
 
